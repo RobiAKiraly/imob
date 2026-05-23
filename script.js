@@ -27,95 +27,63 @@ function getXPathNodes(xpath, context = document) {
 const listings = getXPathNodes('//a[starts-with(@id,"listing-link-")]');
 
 for (let i = 0; i < listings.snapshotLength; i++) {
-
     const link = listings.snapshotItem(i);
 
     // main card
     const card = getXPathNode('./ancestor::div[contains(@class,"relative")][1]', link);
-
     if (!card) continue;
+
+    // ===============================
+    // URL
+    // ===============================
+    const url = link.href || 'N/A';
 
     // ===============================
     // TITLE
     // ===============================
-    const titleNode = getXPathNode(
-        './/h3//span[contains(@class,"text-title")]',
-        card
-    );
-
-    const title = titleNode
-        ? titleNode.textContent.trim()
-        : 'N/A';
+    const titleNode = getXPathNode('.//h3//span[contains(@class,"text-title")]', card);
+    const title = titleNode ? titleNode.textContent.trim() : 'N/A';
 
     // ===============================
     // PRICE
     // ===============================
-    const priceNode = getXPathNode(
-        './/div[contains(@class,"text-xl") and contains(@class,"font-bold")]',
-        card
-    );
-
-    const price = priceNode
-        ? priceNode.textContent.trim().split('\n')[0]
-        : 'N/A';
+    const priceNode = getXPathNode('.//*[@data-cy="card-price"]', card);
+    const price = priceNode ? priceNode.textContent.trim() : 'N/A';
 
     // ===============================
     // BEDROOMS
     // ===============================
-    const bedroomNode = getXPathNode(
-        './/span[contains(@data-cy,"bedroom")]',
-        card
-    );
-
-    const bedrooms = bedroomNode
-        ? bedroomNode.textContent.trim()
-        : 'N/A';
+    const bedroomNode = getXPathNode('.//*[@data-cy="card-bedroom_count"]', card);
+    const bedrooms = bedroomNode ? bedroomNode.textContent.trim() : 'N/A';
 
     // ===============================
     // USABLE SURFACE
     // ===============================
-    const mpNode = getXPathNode(
-    './/span[@data-cy="card-usable_surface"]',
-    card
-);
-
-    const usableSurface = mpNode
-        ? mpNode.textContent.trim()
-        : 'N/A';
+    const mpNode = getXPathNode('.//*[@data-cy="card-usable_surface"]', card);
+    const usableSurface = mpNode ? mpNode.textContent.trim() : 'N/A';
 
     // ===============================
     // FLOOR NUMBER
     // ===============================
-    const floorNode = getXPathNode(
-        './/span[contains(text(),"Etaj")]',
-        card
-    );
-
-    const floor = floorNode
-        ? floorNode.textContent.trim()
-        : 'N/A';
+    const floorNode = getXPathNode('.//*[@data-cy="card-floor_number"]', card);
+    const floor = floorNode ? floorNode.textContent.trim() : 'N/A';
 
     // ===============================
     // BUILDING TYPE
     // ===============================
-    const buildingNode = getXPathNode(
-    './/span[@data-cy="card-building_type"]',
-    card
-);
-
-    const buildingType = buildingNode
-        ? buildingNode.textContent.trim()
-        : 'N/A';
+    const buildingNode = getXPathNode('.//*[@data-cy="card-building_type"]', card);
+    const buildingType = buildingNode ? buildingNode.textContent.trim() : 'N/A';
 
     // ===============================
     // OUTPUT
     // ===============================
     console.log(`🏠 Listing ${i + 1}`);
+    console.log(`   URL             : ${url}`);
     console.log(`   Title           : ${title}`);
     console.log(`   Price           : ${price}`);
     console.log(`   Bedroom Count   : ${bedrooms}`);
     console.log(`   Building Type   : ${buildingType}`);
     console.log(`   Floor Number    : ${floor}`);
     console.log(`   Usable Surface  : ${usableSurface}`);
-    console.log('------------------alalalalalaalalalalallalalalalal-----------------');
+    console.log('-----------------------------------');
 }
